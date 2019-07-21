@@ -21,10 +21,10 @@ Vue.component("grad", {
         <stop offset="100%" :stop-color="lStop[2]"/>
       </linearGradient>
     </defs>
-    <rect :fill="hsl" x=0 y=0 width=20 height=20 />
-    <rect fill="url(#hsv1)" x=0 y=20 height=20 width=200 @pointermove="moveH" @pointerup="up" @pointerdown="downH"></rect>
-    <rect fill="url(#hsv2)" x=0 y=40 height=20 width=200 @pointermove="moveS" @pointerup="up" @pointerdown="downS"></rect>
-    <rect fill="url(#hsv3)" x=0 y=60 height=20 width=200 @pointermove="moveL" @pointerup="up" @pointerdown="downL"></rect>
+    <rect :fill="hsl" x=0 y=0 width=20 height=20 rx=4 />
+    <rect fill="url(#hsv1)" x=0 y=20 rx=4 height=20 width=200 @pointermove="moveH" @pointerup="up" @pointerdown="downH"></rect>
+    <rect fill="url(#hsv2)" x=0 y=40 rx=4 height=20 width=200 @pointermove="moveS" @pointerup="up" @pointerdown="downS"></rect>
+    <rect fill="url(#hsv3)" x=0 y=60 rx=4 height=20 width=200 @pointermove="moveL" @pointerup="up" @pointerdown="downL"></rect>
     <circle style="pointer-events: none;" :cx="h * 200 / 360" cy=30 r=5 stroke="black" fill="white" />
     <circle style="pointer-events: none;" :cx="s * 200 / 100" cy=50 r=5 stroke="black" fill="white" />
     <circle style="pointer-events: none;" :cx="l * 200 / 100" cy=70 r=5 stroke="black" fill="white" />
