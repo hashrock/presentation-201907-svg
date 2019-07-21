@@ -10,6 +10,10 @@
   },
   "devDependencies": {
     "@vue/component-compiler-utils": "^3.0.0",
+    "parcel": "^1.12.3",
     "vue-template-compiler": "^2.6.10"
+  },
+  "scripts": {
+    "dev": "parcel index.html"
   }
 }
