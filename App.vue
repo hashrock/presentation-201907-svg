@@ -71,7 +71,7 @@
       <div class="pane-r__block">
         <label>
           <input type="checkbox" v-model="enableFilter" />
-          Apply Filter
+          Drop Shadow
         </label>
       </div>
     </div>
