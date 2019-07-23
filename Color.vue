@@ -112,6 +112,11 @@ export default {
       pressed: false
     };
   },
+  watch: {
+    hsl(value) {
+      this.$emit("change", value);
+    }
+  },
   computed: {
     hsl() {
       return `hsl(${this.h}, ${this.s}%, ${this.l}%)`;

@@ -26,7 +26,7 @@
           </filter>
         </defs>
         <path :d="curvesStr" id="path1" />
-        <text fill="red" class="output-text" :filter="svgFilter">
+        <text :fill="color" stroke="black" class="output-text" :filter="svgFilter">
           <textPath font-weight="900" font-size="60" href="#path1">TESTTESTTEST</textPath>
         </text>
         <g>
@@ -66,7 +66,7 @@
     </div>
     <div class="pane-r">
       <div class="pane-r__block">
-        <color></color>
+        <color @change="setColor"></color>
       </div>
       <div class="pane-r__block">
         <label>
@@ -99,6 +99,7 @@ export default {
       enableFilter: false,
       height: 300,
       width: 300,
+      color: "white",
       curves: [
         {
           points: [
@@ -116,6 +117,10 @@ export default {
   methods: {
     translate(x, y) {
       return `translate(${x},${y})`;
+    },
+
+    setColor(payload) {
+      this.color = payload;
     },
 
     onPointerUp(e) {
