@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div contenteditable>
     <svg width="300" height="300" ref="canv" viewBox="0 0 300 300">
       <path :d="os" id="path1" />
-      <text>
-        <textPath font-size="20" href="#path1">うねうねテキストうねうねテキスト</textPath>
+      <text class="output-text">
+        <textPath font-weight="900" font-size="30" href="#path1">TESTTESTTEST</textPath>
       </text>
       <g v-for="(item, idx) in o" :key="idx">
         <line
@@ -30,8 +30,8 @@
           :key="pidx"
           :transform="translate(point.x,point.y)"
         >
-          <circle r="10" x="0" y="0" fill="rgba(0,255,0,0.0)" />
-          <circle r="5" x="0" y="0" fill="rgba(0,0,0,0.5)" />
+          <circle class="handle" r="10" x="0" y="0" fill="rgba(0,255,0,0.0)" />
+          <circle style="pointer-events: none;" r="5" x="0" y="0" fill="rgba(0,0,0,0.5)" />
         </g>
       </g>
     </svg>
@@ -105,8 +105,6 @@ export default {
           if (i.type === "C") {
             return `M ${i.p[0].x},${i.p[0].y} C ${i.p[1].x},${i.p[1].y} ${i.p[2].x},${i.p[2].y} ${i.p[3].x},${i.p[3].y}`;
           }
-
-          // return `${i.type} ${i.p.map(ip => `${ip.x}, ${ip.y}`).join(" ")}`;
         })
         .join(" ");
     }
@@ -119,5 +117,13 @@ path {
   fill: none;
   stroke: blue;
   stroke-width: 3;
+}
+
+.output-text{
+  font-size: 30rem;
+}
+
+.handle{
+ cursor: pointer;
 }
 </style>
