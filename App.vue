@@ -3,13 +3,34 @@
     <div contenteditable>
       <svg width="300" height="300" ref="canv" viewBox="0 0 300 300">
         <defs>
-          <filter id='noise' x='0%' y='0%' width='100%' height='100%'>
+          <filter id="noise" x="0%" y="0%" width="100%" height="100%">
             <feTurbulence type="turbulence" baseFrequency="0.01 0.1" numOctaves="1" result="NOISE" />
-            <feDisplacementMap in="SourceGraphic" in2="NOISE" scale="20" xChannelSelector="R" yChannelSelector="R"></feDisplacementMap>
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="NOISE"
+              scale="20"
+              xChannelSelector="R"
+              yChannelSelector="R"
+            />
+          </filter>
+          <filter id="dropshadow">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="1" />
+            <!-- stdDeviation is how much to blur -->
+            <feOffset dx="5" dy="5" result="offsetblur" />
+            <feComponentTransfer>
+              <feFuncA type="linear" slope="0.5" />
+            </feComponentTransfer>
+            <!-- how much to offset -->
+            <feMerge>
+              <feMergeNode />
+              <!-- this contains the offset blurred image -->
+              <feMergeNode in="SourceGraphic" />
+              <!-- this contains the element that the filter is applied to -->
+            </feMerge>
           </filter>
         </defs>
         <path :d="os" id="path1" />
-        <text class="output-text" :filter="svgFilter">
+        <text fill="red" class="output-text" :filter="svgFilter">
           <textPath font-weight="900" font-size="30" href="#path1">TESTTESTTEST</textPath>
         </text>
         <g v-for="(item, idx) in o" :key="idx">
@@ -46,10 +67,9 @@
     <color></color>
     <div>
       <label>
-        <input type="checkbox" v-model="enableFilter">
-        Apply Filter 
+        <input type="checkbox" v-model="enableFilter" />
+        Apply Filter
       </label>
-
     </div>
   </div>
 </template>
@@ -129,8 +149,8 @@ export default {
         })
         .join(" ");
     },
-    svgFilter(){
-      return this.enableFilter ? `url(#noise)` : null
+    svgFilter() {
+      return this.enableFilter ? `url(#dropshadow)` : null;
     }
   }
 };
