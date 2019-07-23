@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div contenteditable>
-      <svg width="300" height="300" ref="canv" viewBox="0 0 300 300">
+    <div contenteditable ref="wrapper">
+      <svg :width="width" :height="height" ref="canv" viewBox="0 0 300 300">
         <defs>
           <filter id="noise" x="0%" y="0%" width="100%" height="100%">
             <feTurbulence type="turbulence" baseFrequency="0.01 0.1" numOctaves="1" result="NOISE" />
@@ -33,33 +33,37 @@
         <text fill="red" class="output-text" :filter="svgFilter">
           <textPath font-weight="900" font-size="30" href="#path1">TESTTESTTEST</textPath>
         </text>
-        <g v-for="(item, idx) in o" :key="idx">
-          <line
-            :x1="item.p[0].x"
-            :y1="item.p[0].y"
-            :x2="item.p[1].x"
-            :y2="item.p[1].y"
-            stroke="black"
-          />
-          <line
-            :x1="item.p[2].x"
-            :y1="item.p[2].y"
-            :x2="item.p[3].x"
-            :y2="item.p[3].y"
-            stroke="black"
-          />
+        <g>
+          <g v-for="(item, idx) in o" :key="idx">
+            <line
+              :x1="item.p[0].x"
+              :y1="item.p[0].y"
+              :x2="item.p[1].x"
+              :y2="item.p[1].y"
+              stroke="black"
+            />
+            <line
+              :x1="item.p[2].x"
+              :y1="item.p[2].y"
+              :x2="item.p[3].x"
+              :y2="item.p[3].y"
+              stroke="black"
+            />
+          </g>
         </g>
-        <g v-for="(item, idx) in o" :key="idx">
-          <g
-            @pointerdown="onPointerDown($event, point)"
-            @pointermove="onPointerMove"
-            @pointerup="onPointerUp"
-            v-for="(point, pidx) in item.p"
-            :key="pidx"
-            :transform="translate(point.x,point.y)"
-          >
-            <circle class="handle" r="10" x="0" y="0" fill="rgba(0,255,0,0.0)" />
-            <circle style="pointer-events: none;" r="5" x="0" y="0" fill="rgba(0,0,0,0.5)" />
+        <g>
+          <g v-for="(item, idx) in o" :key="idx">
+            <g
+              @pointerdown="onPointerDown($event, point)"
+              @pointermove="onPointerMove"
+              @pointerup="onPointerUp"
+              v-for="(point, pidx) in item.p"
+              :key="pidx"
+              :transform="translate(point.x,point.y)"
+            >
+              <circle class="handle" r="10" x="0" y="0" fill="rgba(0,255,0,0.0)" />
+              <circle style="pointer-events: none;" r="5" x="0" y="0" fill="rgba(0,0,0,0.5)" />
+            </g>
           </g>
         </g>
       </svg>
@@ -93,6 +97,8 @@ export default {
   data() {
     return {
       enableFilter: false,
+      height: 300,
+      width: 300,
       o: [
         {
           type: "C",
@@ -137,6 +143,9 @@ export default {
         this.selection.x = p.x - this.offset.x;
         this.selection.y = p.y - this.offset.y;
       }
+    },
+    onResize() {
+      this.width = this.$refs.wrapper.clientWidth;
     }
   },
   computed: {
@@ -152,6 +161,12 @@ export default {
     svgFilter() {
       return this.enableFilter ? `url(#dropshadow)` : null;
     }
+  },
+  mounted() {
+    window.addEventListener("resize", () => {
+      this.onResize();
+    });
+    this.onResize();
   }
 };
 </script>
