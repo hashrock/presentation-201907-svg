@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <div contenteditable ref="wrapper">
-      <svg :width="width" :height="height" ref="canv" viewBox="0 0 300 300">
+  <div class="pane">
+    <div contenteditable ref="wrapper" class="pane-l">
+      <svg :width="width" :height="height" ref="canv" :viewBox="`0 0 ${width} ${height}`">
         <defs>
           <filter id="noise" x="0%" y="0%" width="100%" height="100%">
             <feTurbulence type="turbulence" baseFrequency="0.01 0.1" numOctaves="1" result="NOISE" />
@@ -31,7 +31,7 @@
         </defs>
         <path :d="os" id="path1" />
         <text fill="red" class="output-text" :filter="svgFilter">
-          <textPath font-weight="900" font-size="30" href="#path1">TESTTESTTEST</textPath>
+          <textPath font-weight="900" font-size="60" href="#path1">TESTTESTTEST</textPath>
         </text>
         <g>
           <g v-for="(item, idx) in o" :key="idx">
@@ -68,12 +68,16 @@
         </g>
       </svg>
     </div>
-    <color></color>
-    <div>
-      <label>
-        <input type="checkbox" v-model="enableFilter" />
-        Apply Filter
-      </label>
+    <div class="pane-r">
+      <div class="pane-r__block">
+        <color></color>
+      </div>
+      <div class="pane-r__block">
+        <label>
+          <input type="checkbox" v-model="enableFilter" />
+          Apply Filter
+        </label>
+      </div>
     </div>
   </div>
 </template>
@@ -146,6 +150,7 @@ export default {
     },
     onResize() {
       this.width = this.$refs.wrapper.clientWidth;
+      this.height = this.$refs.wrapper.clientHeight;
     }
   },
   computed: {
@@ -184,5 +189,23 @@ path {
 
 .handle {
   cursor: pointer;
+}
+
+.pane-l {
+  flex: 1;
+  overflow: hidden;
+}
+.pane-r {
+  width: 240px;
+  background: #eee;
+}
+.pane {
+  display: flex;
+  height: 100%;
+}
+.pane-r__block {
+  border-bottom: 1px solid gray;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
 }
 </style>
