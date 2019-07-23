@@ -24,10 +24,26 @@
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
+          <linearGradient
+            gradientUnits="userSpaceOnUse"
+            id="rainbow"
+            :x1="gradient.start.x"
+            :y1="gradient.start.y"
+            :x2="gradient.end.x"
+            :y2="gradient.end.y"
+          >
+            <stop offset="0%" stop-color="#ff0000" />
+            <stop offset="16.7%" stop-color="#ffff00" />
+            <stop offset="33.3%" stop-color="#00ff00" />
+            <stop offset="50.0%" stop-color="#00ffff" />
+            <stop offset="66.7%" stop-color="#0000ff" />
+            <stop offset="83.3%" stop-color="#ff00ff" />
+            <stop offset="100%" stop-color="#ff0000" />
+          </linearGradient>
         </defs>
         <path :d="curvesStr" id="path1" />
-        <text :fill="color" stroke="black" class="output-text" :filter="svgFilter">
-          <textPath font-weight="900" font-size="60" href="#path1">TESTTESTTEST</textPath>
+        <text :fill="fill" stroke="black" class="output-text" :filter="svgFilter">
+          <textPath font-weight="900" font-size="60" href="#path1">SVG最高!</textPath>
         </text>
         <g>
           <g v-for="(item, idx) in curves" :key="idx">
@@ -62,6 +78,26 @@
             </g>
           </g>
         </g>
+        <g v-if="enableRainbow">
+          <g
+            @pointerdown="onPointerDown($event, gradient.start)"
+            @pointermove="onPointerMove"
+            @pointerup="onPointerUp"
+            :transform="translate(gradient.start.x,gradient.start.y)"
+          >
+            <circle class="handle" r="10" x="0" y="0" fill="rgba(0,255,0,0.0)" />
+            <circle style="pointer-events: none;" r="5" x="0" y="0" fill="rgba(0,0,0,0.5)" />
+          </g>
+          <g
+            @pointerdown="onPointerDown($event, gradient.end)"
+            @pointermove="onPointerMove"
+            @pointerup="onPointerUp"
+            :transform="translate(gradient.end.x,gradient.end.y)"
+          >
+            <circle class="handle" r="10" x="0" y="0" fill="rgba(0,255,0,0.0)" />
+            <circle style="pointer-events: none;" r="5" x="0" y="0" fill="rgba(0,0,0,0.5)" />
+          </g>
+        </g>
       </svg>
     </div>
     <div class="pane-r">
@@ -72,6 +108,12 @@
         <label>
           <input type="checkbox" v-model="enableFilter" />
           Drop Shadow
+        </label>
+      </div>
+      <div class="pane-r__block">
+        <label>
+          <input type="checkbox" v-model="enableRainbow" />
+          Rainbow
         </label>
       </div>
     </div>
@@ -111,7 +153,18 @@ export default {
         }
       ],
       offset: null,
-      selection: null
+      selection: null,
+      gradient: {
+        start: {
+          x: 100,
+          y: 100
+        },
+        end: {
+          x: 300,
+          y: 300
+        }
+      },
+      enableRainbow: false
     };
   },
   methods: {
@@ -154,6 +207,9 @@ export default {
     }
   },
   computed: {
+    fill() {
+      return this.enableRainbow ? "url(#rainbow)" : this.color;
+    },
     curvesStr() {
       return this.curves
         .map(i => {
