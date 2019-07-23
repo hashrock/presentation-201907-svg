@@ -15,49 +15,45 @@
           </filter>
           <filter id="dropshadow">
             <feGaussianBlur in="SourceAlpha" stdDeviation="1" />
-            <!-- stdDeviation is how much to blur -->
             <feOffset dx="5" dy="5" result="offsetblur" />
             <feComponentTransfer>
               <feFuncA type="linear" slope="0.5" />
             </feComponentTransfer>
-            <!-- how much to offset -->
             <feMerge>
               <feMergeNode />
-              <!-- this contains the offset blurred image -->
               <feMergeNode in="SourceGraphic" />
-              <!-- this contains the element that the filter is applied to -->
             </feMerge>
           </filter>
         </defs>
-        <path :d="os" id="path1" />
+        <path :d="curvesStr" id="path1" />
         <text fill="red" class="output-text" :filter="svgFilter">
           <textPath font-weight="900" font-size="60" href="#path1">TESTTESTTEST</textPath>
         </text>
         <g>
-          <g v-for="(item, idx) in o" :key="idx">
+          <g v-for="(item, idx) in curves" :key="idx">
             <line
-              :x1="item.p[0].x"
-              :y1="item.p[0].y"
-              :x2="item.p[1].x"
-              :y2="item.p[1].y"
+              :x1="item.points[0].x"
+              :y1="item.points[0].y"
+              :x2="item.points[1].x"
+              :y2="item.points[1].y"
               stroke="black"
             />
             <line
-              :x1="item.p[2].x"
-              :y1="item.p[2].y"
-              :x2="item.p[3].x"
-              :y2="item.p[3].y"
+              :x1="item.points[2].x"
+              :y1="item.points[2].y"
+              :x2="item.points[3].x"
+              :y2="item.points[3].y"
               stroke="black"
             />
           </g>
         </g>
         <g>
-          <g v-for="(item, idx) in o" :key="idx">
+          <g v-for="(item, idx) in curves" :key="idx">
             <g
               @pointerdown="onPointerDown($event, point)"
               @pointermove="onPointerMove"
               @pointerup="onPointerUp"
-              v-for="(point, pidx) in item.p"
+              v-for="(point, pidx) in item.points"
               :key="pidx"
               :transform="translate(point.x,point.y)"
             >
@@ -103,10 +99,9 @@ export default {
       enableFilter: false,
       height: 300,
       width: 300,
-      o: [
+      curves: [
         {
-          type: "C",
-          p: [
+          points: [
             { x: 200, y: 200 },
             { x: 240, y: 200 },
             { x: 210, y: 250 },
@@ -154,12 +149,10 @@ export default {
     }
   },
   computed: {
-    os() {
-      return this.o
+    curvesStr() {
+      return this.curves
         .map(i => {
-          if (i.type === "C") {
-            return `M ${i.p[0].x},${i.p[0].y} C ${i.p[1].x},${i.p[1].y} ${i.p[2].x},${i.p[2].y} ${i.p[3].x},${i.p[3].y}`;
-          }
+          return `M ${i.points[0].x},${i.points[0].y} C ${i.points[1].x},${i.points[1].y} ${i.points[2].x},${i.points[2].y} ${i.points[3].x},${i.points[3].y}`;
         })
         .join(" ");
     },

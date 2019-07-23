@@ -14,22 +14,15 @@
       text {
         font-size: 40px;
       }
+      path {
+        stroke: black;
+        stroke-width: 2px;
+      }
     </style>
   </head>
   <body>
     <svg width="400" height="300" viewBox="0 0 400 300">
-      <text x="40" y="80">
-        <textPath href="#MyPath">
-          Hello World
-        </textPath>
-      </text>
-      <path
-        id="MyPath"
-        fill="none"
-        stroke="blue"
-        stroke-width="3"
-        d="M 28 152 C 28 152 49 78 100 67 C 151 56 210 164 255 148 C 300 133 295 59 295 59"
-      />
+      <path d="M70 110 C 70 140, 110 140, 110 110" />
     </svg>
   </body>
 </html>
