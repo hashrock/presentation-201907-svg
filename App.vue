@@ -82,7 +82,14 @@
               :transform="translate(point.x,point.y)"
             >
               <circle class="handle" r="10" x="0" y="0" fill="rgba(0,255,0,0.0)" />
-              <circle style="pointer-events: none;" r="5" x="0" y="0" fill="rgba(0,0,0,0.5)" />
+              <circle
+                :class="{'selected': selection === point}"
+                style="pointer-events: none;"
+                r="5"
+                x="0"
+                y="0"
+                fill="rgba(0,0,0,0.5)"
+              />
             </g>
           </g>
         </g>
@@ -268,6 +275,10 @@ export default {
 </script>
 
 <style>
+body {
+  margin: 0;
+}
+
 path {
   fill: none;
   stroke: blue;
@@ -280,6 +291,12 @@ path {
 
 .handle {
   cursor: pointer;
+}
+
+.selected {
+  fill: white;
+  stroke: blue;
+  stroke-width: 2;
 }
 
 .pane-l {
