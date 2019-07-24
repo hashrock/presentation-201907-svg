@@ -298,5 +298,7 @@ path {
   border-bottom: 1px solid gray;
   padding-bottom: 1rem;
   padding-top: 1rem;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
 }
 </style>

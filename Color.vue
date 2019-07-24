@@ -44,7 +44,7 @@
         <stop offset="100%" :stop-color="lStop[2]" />
       </linearGradient>
     </defs>
-    <rect :fill="hsl" x="0" y="0" width="20" height="20" />
+    <rect rx="20" :fill="hsl" x="0" y="0" width="20" height="20" />
     <rect
       fill="url(#hsv1)"
       x="0"
