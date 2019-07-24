@@ -57,7 +57,15 @@
           </linearGradient>
         </defs>
         <path v-show="editing" :d="curvesStr" id="path1" />
-        <text :fill="fill" stroke="black" class="output-text" :filter="svgFilter">
+        <text
+          :fill="fill"
+          stroke="black"
+          :stroke-width="borderWidth"
+          stroke-linejoin="round"
+          class="output-text"
+          paint-order="stroke"
+          :filter="svgFilter"
+        >
           <textPath font-weight="900" :font-size="fontSize" href="#path1">SVG最高!</textPath>
         </text>
         <g v-if="editing">
@@ -138,6 +146,10 @@
           サイズ
           <input type="range" v-model="fontSize" />
         </label>
+        <label>
+          輪郭太さ
+          <input type="range" v-model="borderWidth" min="0" max="40" step="0.5" />
+        </label>
       </div>
       <div class="pane-r__block">
         <label>
@@ -182,6 +194,7 @@ export default {
       height: 300,
       width: 300,
       color: "hsl(188, 83%, 50%)",
+      borderWidth: 1,
       curves: [
         {
           points: [
