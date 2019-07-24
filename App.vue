@@ -87,6 +87,13 @@
           </g>
         </g>
         <g v-if="enableRainbow && editing">
+          <line
+            :x1="gradient.start.x"
+            :y1="gradient.start.y"
+            :x2="gradient.end.x"
+            :y2="gradient.end.y"
+            stroke="blue"
+          />
           <g
             @pointerdown="onPointerDown($event, gradient.start)"
             @pointermove="onPointerMove"
@@ -94,7 +101,7 @@
             :transform="translate(gradient.start.x,gradient.start.y)"
           >
             <circle class="handle" r="10" x="0" y="0" fill="rgba(0,255,0,0.0)" />
-            <circle style="pointer-events: none;" r="5" x="0" y="0" fill="rgba(0,0,0,0.5)" />
+            <circle style="pointer-events: none;" r="5" x="0" y="0" fill="rgba(0,0,255,0.5)" />
           </g>
           <g
             @pointerdown="onPointerDown($event, gradient.end)"
@@ -103,7 +110,7 @@
             :transform="translate(gradient.end.x,gradient.end.y)"
           >
             <circle class="handle" r="10" x="0" y="0" fill="rgba(0,255,0,0.0)" />
-            <circle style="pointer-events: none;" r="5" x="0" y="0" fill="rgba(0,0,0,0.5)" />
+            <circle style="pointer-events: none;" r="5" x="0" y="0" fill="rgba(0,0,255,0.5)" />
           </g>
         </g>
       </svg>
