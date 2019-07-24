@@ -1,6 +1,13 @@
 <template>
   <div class="pane" tabindex="0">
-    <div contenteditable ref="wrapper" class="pane-l" @focus="onfocus" @blur="onblur">
+    <div
+      contenteditable
+      ref="wrapper"
+      class="pane-l"
+      @focus="onfocus"
+      @blur="onblur"
+      @pointerdown="blur"
+    >
       <svg
         :width="width"
         :height="height"
@@ -213,6 +220,7 @@ export default {
       this.offset = null;
     },
     onPointerDown(e, item) {
+      e.stopPropagation();
       const rect = e.target;
       const bbox = rect.getBBox();
       this.offset = screenToSvg(
@@ -248,6 +256,9 @@ export default {
       const svg =
         `<?xml version="1.0" standalone="no"?>` + this.$refs.canv.outerHTML;
       prompt("クリップボードにコピーしてください", svg);
+    },
+    blur() {
+      this.selection = null;
     }
   },
   computed: {
@@ -270,6 +281,26 @@ export default {
       this.onResize();
     });
     this.onResize();
+
+    window.addEventListener("keydown", ev => {
+      const value = ev.shiftKey ? 10 : 2;
+      if (this.selection) {
+        switch (event.code) {
+          case "ArrowDown":
+            this.selection.y += value;
+            break;
+          case "ArrowUp":
+            this.selection.y -= value;
+            break;
+          case "ArrowLeft":
+            this.selection.x -= value;
+            break;
+          case "ArrowRight":
+            this.selection.x += value;
+            break;
+        }
+      }
+    });
   }
 };
 </script>
