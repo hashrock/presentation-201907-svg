@@ -59,7 +59,7 @@
         <path v-show="editing" :d="curvesStr" id="path1" />
         <text
           :fill="fill"
-          stroke="black"
+          :stroke="borderColor"
           :stroke-width="borderWidth"
           stroke-linejoin="round"
           class="output-text"
@@ -139,7 +139,12 @@
     </div>
     <div class="pane-r">
       <div class="pane-r__block">
+        <label class="pane-title">塗り</label>
         <color @change="setColor" :initial-color="{h: 188, s: 83, l: 50}"></color>
+      </div>
+      <div class="pane-r__block">
+        <label class="pane-title">輪郭</label>
+        <color @change="setBorderColor" :initial-color="{h: 0, s: 0, l: 0}"></color>
       </div>
       <div class="pane-r__block">
         <label>
@@ -148,7 +153,7 @@
         </label>
         <label>
           輪郭太さ
-          <input type="range" v-model="borderWidth" min="0" max="40" step="0.5" />
+          <input type="range" v-model="borderWidth" min="0" max="40" />
         </label>
       </div>
       <div class="pane-r__block">
@@ -194,7 +199,8 @@ export default {
       height: 300,
       width: 300,
       color: "hsl(188, 83%, 50%)",
-      borderWidth: 1,
+      borderColor: "hsl(0, 0%, 0%)",
+      borderWidth: 3,
       curves: [
         {
           points: [
@@ -227,6 +233,10 @@ export default {
 
     setColor(payload) {
       this.color = payload;
+    },
+
+    setBorderColor(payload) {
+      this.borderColor = payload;
     },
 
     onPointerUp(e) {
@@ -361,5 +371,12 @@ path {
   padding-top: 1rem;
   padding-right: 0.5rem;
   padding-left: 0.5rem;
+}
+.pane-title {
+  font-size: 0.8rem;
+  color: #333;
+  font-weight: 900;
+  text-align: center;
+  display: block;
 }
 </style>
