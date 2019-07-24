@@ -1,7 +1,15 @@
 <template>
-  <div class="pane">
-    <div contenteditable ref="wrapper" class="pane-l">
-      <svg :width="width" :height="height" ref="canv" :viewBox="`0 0 ${width} ${height}`">
+  <div class="pane" tabindex="0">
+    <div contenteditable ref="wrapper" class="pane-l" @focus="onfocus" @blur="onblur">
+      <svg
+        :width="width"
+        :height="height"
+        ref="canv"
+        :viewBox="`0 0 ${width} ${height}`"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        version="1.1"
+      >
         <defs>
           <filter id="noise" x="0%" y="0%" width="100%" height="100%">
             <feTurbulence type="turbulence" baseFrequency="0.01 0.1" numOctaves="1" result="NOISE" />
@@ -41,11 +49,11 @@
             <stop offset="100%" stop-color="#ff0000" />
           </linearGradient>
         </defs>
-        <path :d="curvesStr" id="path1" />
+        <path v-show="editing" :d="curvesStr" id="path1" />
         <text :fill="fill" stroke="black" class="output-text" :filter="svgFilter">
           <textPath font-weight="900" font-size="60" href="#path1">SVG最高!</textPath>
         </text>
-        <g>
+        <g v-if="editing">
           <g v-for="(item, idx) in curves" :key="idx">
             <line
               :x1="item.points[0].x"
@@ -63,7 +71,7 @@
             />
           </g>
         </g>
-        <g>
+        <g v-if="editing">
           <g v-for="(item, idx) in curves" :key="idx">
             <g
               @pointerdown="onPointerDown($event, point)"
@@ -78,7 +86,7 @@
             </g>
           </g>
         </g>
-        <g v-if="enableRainbow">
+        <g v-if="enableRainbow && editing">
           <g
             @pointerdown="onPointerDown($event, gradient.start)"
             @pointermove="onPointerMove"
@@ -116,6 +124,9 @@
           Rainbow
         </label>
       </div>
+      <div class="pane-r__block">
+        <button @click="getSvg">Get SVG</button>
+      </div>
     </div>
   </div>
 </template>
@@ -138,6 +149,7 @@ export default {
   },
   data() {
     return {
+      editing: false,
       enableFilter: false,
       height: 300,
       width: 300,
@@ -204,6 +216,17 @@ export default {
     onResize() {
       this.width = this.$refs.wrapper.clientWidth;
       this.height = this.$refs.wrapper.clientHeight;
+    },
+    onfocus() {
+      this.editing = true;
+    },
+    onblur() {
+      this.editing = false;
+    },
+    getSvg() {
+      const svg =
+        `<?xml version="1.0" standalone="no"?>` + this.$refs.canv.outerHTML;
+      prompt("クリップボードにコピーしてください", svg);
     }
   },
   computed: {
