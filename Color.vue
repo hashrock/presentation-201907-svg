@@ -104,6 +104,9 @@
 
 <script>
 export default {
+  props: {
+    initialColor: Object
+  },
   data() {
     return {
       h: 50,
@@ -178,6 +181,13 @@ export default {
     },
     up(ev) {
       this.pressed = false;
+    }
+  },
+  mounted() {
+    if (this.initialColor) {
+      this.h = this.initialColor.h;
+      this.s = this.initialColor.s;
+      this.l = this.initialColor.l;
     }
   }
 };

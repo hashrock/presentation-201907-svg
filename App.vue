@@ -51,7 +51,7 @@
         </defs>
         <path v-show="editing" :d="curvesStr" id="path1" />
         <text :fill="fill" stroke="black" class="output-text" :filter="svgFilter">
-          <textPath font-weight="900" font-size="60" href="#path1">SVG最高!</textPath>
+          <textPath font-weight="900" :font-size="fontSize" href="#path1">SVG最高!</textPath>
         </text>
         <g v-if="editing">
           <g v-for="(item, idx) in curves" :key="idx">
@@ -117,7 +117,13 @@
     </div>
     <div class="pane-r">
       <div class="pane-r__block">
-        <color @change="setColor"></color>
+        <color @change="setColor" :initial-color="{h: 188, s: 83, l: 50}"></color>
+      </div>
+      <div class="pane-r__block">
+        <label>
+          サイズ
+          <input type="range" v-model="fontSize" />
+        </label>
       </div>
       <div class="pane-r__block">
         <label>
@@ -156,11 +162,12 @@ export default {
   },
   data() {
     return {
+      fontSize: 60,
       editing: false,
       enableFilter: false,
       height: 300,
       width: 300,
-      color: "white",
+      color: "hsl(188, 83%, 50%)",
       curves: [
         {
           points: [
