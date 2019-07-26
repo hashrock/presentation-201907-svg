@@ -401,18 +401,4 @@ path {
   text-align: center;
   display: block;
 }
-.party-hard {
-  animation: filter-animation 1000ms infinite;
-}
-@keyframes filter-animation {
-  0% {
-    filter: hue-rotate(0deg);
-  }
-  50% {
-    filter: hue-rotate(100deg);
-  }
-  100% {
-    filter: hue-rotate(0deg);
-  }
-}
 </style>
