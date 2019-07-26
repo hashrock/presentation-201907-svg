@@ -58,9 +58,9 @@
           <filter id="hue-rotate">
             <feColorMatrix type="hueRotate" :values="angle" />
             <feComponentTransfer>
-              <feFuncR type="linear" slope="1.6" />
-              <feFuncG type="linear" slope="1.6" />
-              <feFuncB type="linear" slope="1.6" />
+              <feFuncR type="linear" slope="1.2" />
+              <feFuncG type="linear" slope="1.2" />
+              <feFuncB type="linear" slope="1.2" />
             </feComponentTransfer>
           </filter>
         </defs>
