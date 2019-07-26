@@ -55,19 +55,29 @@
             <stop offset="83.3%" stop-color="#ff00ff" />
             <stop offset="100%" stop-color="#ff0000" />
           </linearGradient>
+          <filter id="hue-rotate">
+            <feColorMatrix type="hueRotate" :values="angle" />
+            <feComponentTransfer>
+              <feFuncR type="linear" slope="1.6" />
+              <feFuncG type="linear" slope="1.6" />
+              <feFuncB type="linear" slope="1.6" />
+            </feComponentTransfer>
+          </filter>
         </defs>
         <path v-show="editing" :d="curvesStr" id="path1" />
-        <text
-          :fill="fill"
-          :stroke="borderColor"
-          :stroke-width="borderWidth"
-          stroke-linejoin="round"
-          class="output-text"
-          paint-order="stroke"
-          :filter="svgFilter"
-        >
-          <textPath font-weight="900" :font-size="fontSize" href="#path1">SVG最高!</textPath>
-        </text>
+        <g :filter="enablePartyHard ? 'url(#hue-rotate)' : ''">
+          <text
+            :fill="fill"
+            :stroke="borderColor"
+            :stroke-width="borderWidth"
+            stroke-linejoin="round"
+            class="output-text"
+            paint-order="stroke"
+            :filter="svgFilter"
+          >
+            <textPath font-weight="900" :font-size="fontSize" href="#path1">SVG最高!</textPath>
+          </text>
+        </g>
         <g v-if="editing">
           <g v-for="(item, idx) in curves" :key="idx">
             <line
@@ -169,6 +179,12 @@
         </label>
       </div>
       <div class="pane-r__block">
+        <label>
+          <input type="checkbox" v-model="enablePartyHard" />
+          Party Hard
+        </label>
+      </div>
+      <div class="pane-r__block">
         <button @click="getSvg">Get SVG</button>
       </div>
     </div>
@@ -198,6 +214,7 @@ export default {
       enableFilter: false,
       height: 300,
       width: 300,
+      angle: 0,
       color: "hsl(188, 83%, 50%)",
       borderColor: "hsl(0, 0%, 0%)",
       borderWidth: 3,
@@ -223,7 +240,8 @@ export default {
           y: 300
         }
       },
-      enableRainbow: false
+      enableRainbow: false,
+      enablePartyHard: false
     };
   },
   methods: {
@@ -324,6 +342,10 @@ export default {
         }
       }
     });
+
+    setInterval(() => {
+      this.angle += 5;
+    }, 10);
   }
 };
 </script>
@@ -378,5 +400,19 @@ path {
   font-weight: 900;
   text-align: center;
   display: block;
+}
+.party-hard {
+  animation: filter-animation 1000ms infinite;
+}
+@keyframes filter-animation {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    filter: hue-rotate(100deg);
+  }
+  100% {
+    filter: hue-rotate(0deg);
+  }
 }
 </style>
