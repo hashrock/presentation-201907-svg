@@ -159,7 +159,7 @@
       <div class="pane-r__block">
         <label>
           サイズ
-          <input type="range" v-model="fontSize" />
+          <input type="range" v-model="fontSize" min="0" max="300" />
         </label>
         <label>
           輪郭太さ
